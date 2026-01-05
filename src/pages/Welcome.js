@@ -33,7 +33,7 @@ export default function Welcome() {
       </main>
 
       {/* CONTENTINFO LANDMARK (OUTSIDE MAIN) */}
-      <Footer />
+      <Footer/>
     </>
   );
 }

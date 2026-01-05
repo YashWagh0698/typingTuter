@@ -6,6 +6,7 @@ export default function TutorialList() {
   const navigate = useNavigate();
 
   return (
+<div>
     <main>
       <h2>
         {category} – {level} Tutorials
@@ -38,6 +39,7 @@ export default function TutorialList() {
         ))}
       </ul>
     </main>
-</Footer/>
+<Footer/>
+</div>
   );
 }

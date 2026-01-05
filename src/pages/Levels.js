@@ -7,6 +7,7 @@ export default function Levels() {
   const navigate = useNavigate();
 
   return (
+<div>
     <main>
       <h2>{category} Levels</h2>
 
@@ -36,5 +37,6 @@ export default function Levels() {
       </ul>
     </main>
 <Footer/>
+</div>
   );
 }

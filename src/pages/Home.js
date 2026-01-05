@@ -5,6 +5,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   return (
+<div>
     <main>
       <h1>Typing Practice (Audio Based)</h1>
 
@@ -38,5 +39,6 @@ export default function Home() {
       </ul>
     </main>
 <Footer/>
+</div>
   );
 }

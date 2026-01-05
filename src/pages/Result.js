@@ -35,6 +35,7 @@ export default function Result() {
       : 0;
 
   return (
+<div>
     <main>
       <h2>
         Result — {category} | {level} | Tutorial {tutorial}
@@ -97,6 +98,7 @@ export default function Result() {
         Go to Home
       </button>
     </main>
-</Footer>
+<Footer/>
+</div>
   );
 }
