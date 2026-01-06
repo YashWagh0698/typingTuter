@@ -8,7 +8,7 @@ export default function Welcome() {
     <>
       {/* MAIN LANDMARK */}
       <main>
-        <h1>Welcome to TypeHear</h1>
+        <h1>Welcome to TypeHear hi!</h1>
 
         <p>
           TypeHear is an audio-based English typing practice application.
