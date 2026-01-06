@@ -1,30 +1,28 @@
-let currentUtterance = null;
-
 export function speak(text, onEnd, onStart) {
-  speechSynthesis.cancel();
+  // Stop any previous speech
+  window.speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
 
   utterance.onstart = () => {
-    onStart && onStart();
+    if (onStart) onStart();
   };
 
   utterance.onend = () => {
-    onEnd && onEnd();
+    if (onEnd) onEnd();
   };
 
-  currentUtterance = utterance;
-  speechSynthesis.speak(utterance);
+  window.speechSynthesis.speak(utterance);
 }
 
 export function pauseSpeech() {
-  if (speechSynthesis.speaking) {
-    speechSynthesis.pause();
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.pause();
   }
 }
 
 export function resumeSpeech() {
-  if (speechSynthesis.paused) {
-    speechSynthesis.resume();
+  if (window.speechSynthesis.paused) {
+    window.speechSynthesis.resume();
   }
 }
