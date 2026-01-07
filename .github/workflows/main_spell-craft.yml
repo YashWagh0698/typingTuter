@@ -51,10 +51,9 @@ jobs:
         with:
           name: app
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: spell-craft
-          slot-name: Production
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_83000CFEB3354200A1223D8727DB5ED4 }}
-          package: .
+- name: Deploy to Azure Web App
+  uses: azure/webapps-deploy@v3
+  with:
+    app-name: spell-craft
+    publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_83000CFEB3354200A1223D8727DB5ED4 }}
+    package: .
