@@ -1,5 +1,5 @@
 import express from "express";
-	import cors from "cors";
+import cors from "cors";
 import dotenv from "dotenv";
 import OpenAI from "openai";
 import path from "path";
@@ -20,7 +20,7 @@ const __dirname = path.dirname(__filename);
 /* ===============================
    SERVE REACT BUILD (AZURE)
 ================================ */
-app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.use(express.static(path.join(__dirname, "../build")));
 
 /* ===============================
    AZURE OPENAI CLIENT
@@ -118,7 +118,7 @@ Rules:
 // Serve React for any unknown route (Express 5 SAFE)
 app.use((req, res) => {
   res.sendFile(
-    path.join(__dirname, "../frontend/build/index.html")
+    path.join(__dirname, "../build/index.html")
   );
 });
 
