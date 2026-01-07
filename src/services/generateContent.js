@@ -7,7 +7,7 @@ export async function generateContent(category, level, taskNumber, tutorial) {
     ? JSON.parse(saved).map(t => t.correctText)
     : [];
 
-  const res = await fetch("http://localhost:5000/generate", {
+  const res = await fetch("/generate", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
