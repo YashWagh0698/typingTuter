@@ -13,24 +13,32 @@ jobs:
       contents: read
 
     steps:
+      # 🔹 Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ✅ Use Node 20 LTS (matches Azure)
+      # 🔹 Use Node 20 LTS (matches Azure App Service)
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      # ✅ Install & build React frontend
-      - name: Install dependencies
+      # 🔹 Install frontend dependencies
+      - name: Install frontend dependencies
         run: npm install
 
+      # 🔹 Build React frontend
       - name: Build React app
         run: npm run build
 
-      # ✅ Upload ONLY what Azure needs
+      # 🔹 Install backend dependencies (CRITICAL FIX)
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm install
+
+      # 🔹 Upload build + backend (with node_modules)
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
@@ -46,11 +54,13 @@ jobs:
     needs: build
 
     steps:
+      # 🔹 Download artifact
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
           name: app
 
+      # 🔹 Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
