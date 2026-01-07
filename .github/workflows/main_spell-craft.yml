@@ -16,21 +16,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ✅ Use stable Node version
+      # ✅ Use Node 20 LTS (matches Azure)
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: npm
 
-      # ✅ Install & build React frontend (root package.json)
+      # ✅ Install & build React frontend
       - name: Install dependencies
         run: npm install
 
       - name: Build React app
         run: npm run build
 
-      # ✅ Upload ONLY build output + backend
+      # ✅ Upload ONLY what Azure needs
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
@@ -51,9 +51,9 @@ jobs:
         with:
           name: app
 
-- name: Deploy to Azure Web App
-  uses: azure/webapps-deploy@v3
-  with:
-    app-name: spell-craft
-    publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_83000CFEB3354200A1223D8727DB5ED4 }}
-    package: .
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: spell-craft
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_83000CFEB3354200A1223D8727DB5ED4 }}
+          package: .
