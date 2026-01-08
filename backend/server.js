@@ -40,12 +40,27 @@ const client = new OpenAI({
    GENERATE CONTENT API
 ================================ */
 app.post("/generate", async (req, res) => {
-  const { category, level, taskNumber, usedTexts = [] } = req.body;
+  try {
+    console.log("📥 /generate called with:", req.body);
 
-  let instruction = "";
+    const { category, level, taskNumber, usedTexts } = req.body;
 
-  if (category === "words") {
-    instruction = `
+    // ---------- BASIC VALIDATION ----------
+    if (!category || !level || !taskNumber) {
+      console.error("❌ Missing required parameters");
+      return res.status(400).json({
+        error: "Missing required parameters",
+        required: ["category", "level", "taskNumber"],
+      });
+    }
+
+    const safeUsedTexts = Array.isArray(usedTexts) ? usedTexts : [];
+
+    // ---------- INSTRUCTION BY CATEGORY ----------
+    let instruction = "";
+
+    if (category === "words") {
+      instruction = `
 Generate EXACTLY ONE English word.
 
 Rules:
@@ -55,27 +70,31 @@ Rules:
 - No numbering
 - Plain text only
 `;
-  }
+    } else if (category === "sentences") {
+      instruction =
+        "Generate ONE simple English sentence for typing practice.";
+    } else if (category === "paragraphs") {
+      instruction =
+        "Generate ONE short English paragraph for typing practice.";
+    } else {
+      console.error("❌ Invalid category:", category);
+      return res.status(400).json({
+        error: "Invalid category",
+        allowed: ["words", "sentences", "paragraphs"],
+      });
+    }
 
-  if (category === "sentences") {
-    instruction =
-      "Generate ONE simple English sentence for typing practice.";
-  }
-
-  if (category === "paragraphs") {
-    instruction =
-      "Generate ONE short English paragraph for typing practice.";
-  }
-
-  const avoidText =
-    usedTexts.length > 0
-      ? `
+    // ---------- UNIQUENESS BLOCK ----------
+    const avoidText =
+      safeUsedTexts.length > 0
+        ? `
 Do NOT repeat or reuse any of the following content:
-${usedTexts.join("\n")}
+${safeUsedTexts.join("\n")}
 `
-      : "";
+        : "";
 
-  const prompt = `
+    // ---------- PROMPT ----------
+    const prompt = `
 You are a typing tutor.
 Difficulty: ${level}
 Task number: ${taskNumber}
@@ -91,23 +110,46 @@ Rules:
 - Content must be NEW and DIFFERENT from all previous tasks
 `;
 
-  try {
+    console.log("🧠 Sending prompt to Azure OpenAI...");
+
+    // ---------- OPENAI CALL ----------
     const response = await client.chat.completions.create({
       model: process.env.AZURE_OPENAI_DEPLOYMENT,
       messages: [{ role: "user", content: prompt }],
       temperature: 0.9,
     });
 
-    res.json({
-      text: response.choices[0].message.content.trim(),
-    });
-  } catch (error) {
-    console.error("🔥 AZURE OPENAI ERROR 🔥");
-    console.error(error?.response?.data || error.message);
+    const text =
+      response?.choices?.[0]?.message?.content?.trim();
 
-    res.status(500).json({
-      error: "Azure OpenAI failed",
-      details: error?.response?.data || error.message,
+    if (!text) {
+      console.error("❌ Empty response from Azure OpenAI");
+      return res.status(502).json({
+        error: "Empty response from Azure OpenAI",
+      });
+    }
+
+    console.log("✅ Generated text:", text);
+
+    return res.status(200).json({ text });
+
+  } catch (error) {
+    console.error("🔥 /generate FAILED");
+
+    if (error?.response) {
+      // Azure OpenAI error
+      console.error("Azure response error:", error.response.data);
+      return res.status(500).json({
+        error: "Azure OpenAI error",
+        details: error.response.data,
+      });
+    }
+
+    console.error("Unexpected error:", error.message);
+
+    return res.status(500).json({
+      error: "Internal server error",
+      details: error.message,
     });
   }
 });
