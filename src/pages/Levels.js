@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { levels } from "../utils/levelsData";
 import Footer from "../components/Footer";
+import BackButton from "../components/BackButton";
 
 export default function Levels() {
   const { category } = useParams();
@@ -9,6 +10,7 @@ export default function Levels() {
   return (
 <div>
     <main>
+<BackButton/>
       <h2>{category} Levels</h2>
 
       <ul style={{ listStyle: "none", padding: 0 }}>

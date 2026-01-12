@@ -8,27 +8,28 @@ export default function Welcome() {
     <>
       {/* MAIN LANDMARK */}
       <main>
-        <h1>Welcome to TypeHear hi!</h1>
+        <h1>Welcome to TypeHear</h1>
 
         <p>
-          TypeHear is an audio-based English typing practice application.
+          SpellCraft is an audio-based English typing practice application.<br/>
         </p>
 
         <p>
           You will listen to words, sentences, or paragraphs and type
-          exactly what you hear. This application is designed especially
-          for screen reader users and learners who want to improve their
-          typing accuracy and listening skills.
+          exactly what you hear.<br/> 
+This application is designed especially
+          for Students and learners who want to improve their
+          typing accuracy and listening skills.<br/>
         </p>
 
         <p>
           Each practice session includes difficulty levels, tutorials,
           timed typing tasks, and detailed results to help you track
-          your progress.
+          your progress.<br/>
         </p>
 
         <button onClick={() => navigate("/practice")}>
-          ▶ Play
+          Play
         </button>
       </main>
 

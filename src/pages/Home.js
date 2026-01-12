@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
+import BackButton from "../components/BackButton";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -7,6 +8,9 @@ export default function Home() {
   return (
 <div>
     <main>
+
+<BackButton/>
+
       <h1>Typing Practice (Audio Based)</h1>
 
       <ul style={{ listStyle: "none", padding: 0 }}>
