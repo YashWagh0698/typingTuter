@@ -154,12 +154,40 @@ export default function Task() {
         {isSpeaking ? "Pause" : "Play"}
       </button>
 
+<div
+  aria-label="Typing content"
+  className="typing-content"
+>
+  {generatedText}
+</div>
+
 <textarea
   ref={inputRef}
   value={input}
   onChange={(e) => setInput(e.target.value)}
   disabled={!isRunning || timeLeft === 0}
+
+  /* ❌ Disable paste (Ctrl+V, Cmd+V, right-click paste) */
+  onPaste={(e) => {
+    e.preventDefault();
+  }}
+
+  /* ❌ Disable drag & drop text */
+  onDrop={(e) => {
+    e.preventDefault();
+  }}
+
   onKeyDown={(e) => {
+    /* ❌ Block Ctrl+V / Cmd+V */
+    if (
+      (e.ctrlKey || e.metaKey) &&
+      e.key.toLowerCase() === "v"
+    ) {
+      e.preventDefault();
+      return;
+    }
+
+    /* ✅ Ctrl+Enter → Next task */
     if (
       e.ctrlKey &&
       e.key === "Enter" &&
@@ -170,6 +198,8 @@ export default function Task() {
       handleNext();
     }
   }}
+
+  aria-label="Type the content manually. Paste is disabled."
 />
 
       <button onClick={handleNext} disabled={!isRunning}>
