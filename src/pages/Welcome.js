@@ -8,7 +8,7 @@ export default function Welcome() {
     <>
       {/* MAIN LANDMARK */}
       <main>
-        <h1>Welcome to TypeHear</h1>
+        <h1>Welcome to spellCraft</h1>
 
         <p>
           SpellCraft is an audio-based English typing practice application.<br/>
