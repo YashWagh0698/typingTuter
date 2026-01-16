@@ -158,7 +158,7 @@ export default function Task() {
   aria-label="Typing content"
   className="typing-content"
 >
-  {generatedText}
+  {generateContent}
 </div>
 
 <textarea
