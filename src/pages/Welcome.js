@@ -23,7 +23,7 @@ This application is designed especially
         </p>
 
         <p>
-          Each practice session includes difficulty levels, tutorials,
+         Each practice session includes difficulty levels, tutorials,
           timed typing tasks, and detailed results to help you track
           your progress.<br/>
         </p>
