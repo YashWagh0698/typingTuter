@@ -35,7 +35,6 @@ jobs:
       # 🔹 Install backend dependencies (CRITICAL FIX)
       - name: Install backend dependencies
         run: |
-          cd backend
           npm install
 
       # 🔹 Upload build + backend (with node_modules)
