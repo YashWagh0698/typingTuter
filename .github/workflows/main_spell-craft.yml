@@ -1,4 +1,4 @@
-name: Build and deploy Node.js app to Azure Web App - spell-craft
+name: Build and deploy Node.js app to Azure Web App
 
 on:
   push:
@@ -7,60 +7,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
-      # 🔹 Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 🔹 Use Node 20 LTS (matches Azure App Service)
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
-      # 🔹 Install frontend dependencies
-      - name: Install frontend dependencies
+      - name: Install dependencies
         run: npm install
 
-      # 🔹 Build React frontend
       - name: Build React app
         run: npm run build
 
-      # 🔹 Install backend dependencies (CRITICAL FIX)
-      - name: Install backend dependencies
-        run: |
-          cd backend
-          npm install
-
-      # 🔹 Upload build + backend (with node_modules)
-      - name: Upload artifact for deployment
-        uses: actions/upload-artifact@v4
-        with:
-          name: app
-          path: |
-            build
-            backend
-            package.json
-            package-lock.json
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      # 🔹 Download artifact
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: app
-
-      # 🔹 Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
