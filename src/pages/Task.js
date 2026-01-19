@@ -5,6 +5,7 @@ import { speak, pauseSpeech } from "../utils/speak";
 import { calculateTime } from "../utils/calculateTime";
 import { useTimer } from "../hooks/useTimer";
 import { useBackgroundSound } from "../hooks/useBackgroundSound";
+import BackButton from "../components/BackButton";
 
 const TOTAL_TASKS = 10;
 
@@ -128,6 +129,7 @@ export default function Task() {
 
   return (
     <main>
+<BackButton/>
       <h2>
         Tutorial {tutorial} — Task {taskNumber} of {TOTAL_TASKS}
       </h2>
@@ -158,7 +160,7 @@ export default function Task() {
   aria-label="Typing content"
   className="typing-content"
 >
-  {generateContent}
+  {text}
 </div>
 
 <textarea
