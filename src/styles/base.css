@@ -1,0 +1,24 @@
+ 
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-base);
+  font-size: var(--font-size);
+  line-height: 1.6;
+}
+
+/* Keyboard & screen-reader friendly */
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* Remove default weird margins */
+h1, h2, h3, p {
+  margin: 0;
+}

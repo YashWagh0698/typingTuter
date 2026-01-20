@@ -1,0 +1,23 @@
+main {
+  max-width: 70ch;
+  margin: auto;
+  padding: var(--space-lg);
+}
+
+section {
+  margin-bottom: var(--space-xl);
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin-bottom: var(--space-md);
+}
+
+h2 {
+  font-size: 1.3rem;
+  margin-bottom: var(--space-md);
+}
+
+p {
+  margin-bottom: var(--space-sm);
+}

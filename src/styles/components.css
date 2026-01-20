@@ -1,0 +1,30 @@
+button {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-large);
+  border-radius: 6px;
+  border: none;
+  background: var(--primary);
+  color: #000;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+textarea {
+  width: 100%;
+  min-height: 8rem;
+  padding: var(--space-md);
+  font-size: var(--font-large);
+  border-radius: 6px;
+}
+
+/* Typing text block */
+.typing-content {
+  background: #020617;
+  padding: var(--space-lg);
+  border-radius: 8px;
+  font-size: 1.2rem;
+  white-space: pre-wrap;
+  margin-bottom: var(--space-md);
+}
