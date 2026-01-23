@@ -5,7 +5,6 @@ import { speak, pauseSpeech } from "../utils/speak";
 import { calculateTime } from "../utils/calculateTime";
 import { useTimer } from "../hooks/useTimer";
 import { useBackgroundSound } from "../hooks/useBackgroundSound";
-import BackButton from "../components/BackButton";
 
 const TOTAL_TASKS = 10;
 
@@ -84,6 +83,20 @@ export default function Task() {
 
   useBackgroundSound(timeLeft, isRunning);
 
+function handleExitTutorial() {
+  // stop speech immediately
+  pauseSpeech();
+  setIsSpeaking(false);
+
+  // clear tutorial progress
+  sessionStorage.removeItem(
+    `tutorial-${category}-${level}-${tutorial}`
+  );
+
+  // exit tutorial flow (choose your route)
+  navigate(`/tutorials/${category}/${level}`);
+}
+
   function countCorrectCharacters(correct, typed) {
     let count = 0;
     for (let i = 0; i < Math.min(correct.length, typed.length); i++) {
@@ -129,7 +142,13 @@ export default function Task() {
 
   return (
     <main>
-<BackButton/>
+<button
+  onClick={handleExitTutorial}
+  aria-label="Exit tutorial"
+>
+ Exit Tutorial
+</button>
+
       <h2>
         Tutorial {tutorial} — Task {taskNumber} of {TOTAL_TASKS}
       </h2>

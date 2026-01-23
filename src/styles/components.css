@@ -28,3 +28,16 @@ textarea {
   white-space: pre-wrap;
   margin-bottom: var(--space-md);
 }
+
+.app-header {
+  padding: var(--space-md);
+  display: flex;
+  align-items: center;
+}
+
+/* Logo sizing rules (vision-independent) */
+.app-logo {
+  max-height: 3rem;     /* safe header size */
+  max-width: 100%;
+  height: auto;
+}
