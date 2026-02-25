@@ -29,5 +29,5 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: spell-craft
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_83000CFEB3354200A1223D8727DB5ED4 }}
+publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: .
