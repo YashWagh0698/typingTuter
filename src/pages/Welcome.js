@@ -31,7 +31,7 @@ This application is designed especially
         </p>
 
         <button onClick={() => navigate("/practice")}>
-          Play
+          PLAY
         </button>
       </main>
 
