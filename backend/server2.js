@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import Groq from "groq";
+import Groq from "groq-sdk"; // ✅ FIXED IMPORT
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -12,20 +12,19 @@ app.use(cors());
 app.use(express.json());
 
 /* ===============================
-   FIX: DEFINE __dirname FIRST
+   DEFINE __dirname
 ================================ */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /* ===============================
-   SERVE REACT BUILD (AZURE)
+   SERVE REACT BUILD
 ================================ */
 app.use(express.static(path.join(__dirname, "../build")));
 
 /* ===============================
-   GROQ CLIENT
+   GROQ CLIENT (FIXED)
 ================================ */
-
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
@@ -39,9 +38,7 @@ app.post("/generate", async (req, res) => {
 
     const { category, level, taskNumber, usedTexts } = req.body;
 
-    // ---------- BASIC VALIDATION ----------
     if (!category || !level || !taskNumber) {
-      console.error("❌ Missing required parameters");
       return res.status(400).json({
         error: "Missing required parameters",
         required: ["category", "level", "taskNumber"],
@@ -50,35 +47,28 @@ app.post("/generate", async (req, res) => {
 
     const safeUsedTexts = Array.isArray(usedTexts) ? usedTexts : [];
 
-    // ---------- INSTRUCTION BY CATEGORY ----------
     let instruction = "";
 
     if (category === "words") {
       instruction = `
 Generate EXACTLY ONE English word.
-
 Rules:
 - Only ONE word
 - No spaces
 - No punctuation
-- No numbering
 - Plain text only
 `;
     } else if (category === "sentences") {
-      instruction =
-        "Generate ONE simple English sentence for typing practice.";
+      instruction = "Generate ONE simple English sentence for typing practice.";
     } else if (category === "paragraphs") {
-      instruction =
-        "Generate ONE short English paragraph for typing practice.";
+      instruction = "Generate ONE short English paragraph for typing practice.";
     } else {
-      console.error("❌ Invalid category:", category);
       return res.status(400).json({
         error: "Invalid category",
         allowed: ["words", "sentences", "paragraphs"],
       });
     }
 
-    // ---------- UNIQUENESS BLOCK ----------
     const avoidText =
       safeUsedTexts.length > 0
         ? `
@@ -87,7 +77,6 @@ ${safeUsedTexts.join("\n")}
 `
         : "";
 
-    // ---------- PROMPT (UNCHANGED) ----------
     const prompt = `
 You are a typing tutor.
 Difficulty: ${level}
@@ -101,12 +90,9 @@ Rules:
 - Plain text only
 - No numbering
 - No explanation
-- Content must be NEW and DIFFERENT from all previous tasks
+- Content must be NEW and DIFFERENT
 `;
 
-    console.log("🧠 Sending prompt to Groq...");
-
-    // ---------- GROQ CALL ----------
     const response = await groq.chat.completions.create({
       model: "llama-3.1-8b-instant",
       messages: [{ role: "user", content: prompt }],
@@ -116,20 +102,13 @@ Rules:
     const text = response?.choices?.[0]?.message?.content?.trim();
 
     if (!text) {
-      console.error("❌ Empty response from Gemini");
-      return res.status(502).json({
-        error: "Empty response from Gemini",
-      });
+      return res.status(502).json({ error: "Empty response from Groq" });
     }
-
-    console.log("✅ Generated text:", text);
 
     return res.status(200).json({ text });
 
   } catch (error) {
-    console.error("🔥 /generate FAILED");
-    console.error("Gemini error:", error);
-
+    console.error("🔥 /generate FAILED:", error);
     return res.status(500).json({
       error: "Internal server error",
       details: error.message,
@@ -138,13 +117,10 @@ Rules:
 });
 
 /* ===============================
-   REACT ROUTE FALLBACK
+   REACT FALLBACK
 ================================ */
-// Serve React for any unknown route (Express 5 SAFE)
 app.use((req, res) => {
-  res.sendFile(
-    path.join(__dirname, "../build/index.html")
-  );
+  res.sendFile(path.join(__dirname, "../build/index.html"));
 });
 
 /* ===============================

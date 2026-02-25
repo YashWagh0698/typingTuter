@@ -1,6 +1,11 @@
-export async function generateContent(category, level, taskNumber, tutorial) {
+export async function generateContent(
+  category,
+  level,
+  tutorialNumber,
+  taskNumber
+) {
   const saved = sessionStorage.getItem(
-    `tutorial-${category}-${level}-${tutorial}`
+    `tutorial-${category}-${level}-${tutorialNumber}`
   );
 
   const usedTexts = saved
@@ -15,10 +20,15 @@ export async function generateContent(category, level, taskNumber, tutorial) {
     body: JSON.stringify({
       category,
       level,
+      tutorialNumber, // ✅ REQUIRED BY BACKEND
       taskNumber,
-      usedTexts, // 🔴 IMPORTANT
+      usedTexts,
     }),
   });
+
+  if (!res.ok) {
+    throw new Error("Failed to generate content");
+  }
 
   const data = await res.json();
   return data.text;

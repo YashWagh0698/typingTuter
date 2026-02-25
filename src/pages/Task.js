@@ -20,6 +20,8 @@ export default function Task() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [loadedTask, setLoadedTask] = useState(null);
+const [checked, setChecked] = useState(false);
+const [accuracy, setAccuracy] = useState(null);
 
   const [results, setResults] = useState(() => {
     const saved = sessionStorage.getItem(
@@ -28,7 +30,7 @@ export default function Task() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const { timeLeft, start, reset, isRunning } = useTimer(0);
+const { timeLeft, start, stop, reset, isRunning } = useTimer(0);
   const changeAudio = new Audio("/audio/changeAudio.mp3");
 
   // 🔹 Load task (TTS FIRST → TIMER AFTER)
@@ -42,7 +44,7 @@ export default function Task() {
       pauseSpeech();
       setIsSpeaking(false);
 
-      const content = await generateContent(category, level, taskNumber);
+      const content = await generateContent(category, level, tutorial, taskNumber);
       setText(content);
       setLoadedTask(taskNumber);
 
@@ -64,7 +66,7 @@ export default function Task() {
     }
 
     loadTask();
-  }, [category, level, taskNumber, loadedTask, reset, start]);
+  },[category, level, tutorial, taskNumber, loadedTask, reset, start] );
 
   // Autofocus input ONLY when timer starts
   useEffect(() => {
@@ -105,6 +107,23 @@ function handleExitTutorial() {
     return count;
   }
 
+function handleCheckAnswer() {
+  const correctChars = countCorrectCharacters(text, input);
+  const totalChars = text.length;
+
+  const percent = Math.round((correctChars / totalChars) * 100);
+
+  setAccuracy(percent);
+  setChecked(true);
+
+  // 🔴 STOP TIMER HERE
+  stop();
+
+  // stop speech
+  pauseSpeech();
+  setIsSpeaking(false);
+}
+
   function handleNext() {
     changeAudio.currentTime = 0;
     changeAudio.play().catch(() => {});
@@ -128,6 +147,8 @@ function handleExitTutorial() {
     setResults(updatedResults);
     setInput("");
     setLoadedTask(null);
+setChecked(false);
+setAccuracy(null);
 
     if (taskNumber < TOTAL_TASKS) {
       navigate(`/task/${category}/${level}/${tutorial}/${taskNumber + 1}`);
@@ -186,7 +207,7 @@ function handleExitTutorial() {
   ref={inputRef}
   value={input}
   onChange={(e) => setInput(e.target.value)}
-  disabled={!isRunning || timeLeft === 0}
+  disabled={!isRunning || timeLeft === 0 || checked}
 
   /* ❌ Disable paste (Ctrl+V, Cmd+V, right-click paste) */
   onPaste={(e) => {
@@ -220,10 +241,22 @@ function handleExitTutorial() {
     }
   }}
 
-  aria-label="Type the content manually. Paste is disabled."
+  aria-label="Type the content manually, Paste is disabled."
 />
+<button
+  onClick={handleCheckAnswer}
+  disabled={!isRunning || checked}
+>
+  Check Answer
+</button>
 
-      <button onClick={handleNext} disabled={!isRunning}>
+{checked && (
+  <p aria-live="polite">
+    Accuracy: {accuracy}%
+  </p>
+)}
+
+      <button onClick={handleNext} disabled={!checked}>
         {taskNumber < TOTAL_TASKS ? "Next Task" : "Finish Tutorial"}
       </button>
     </main>

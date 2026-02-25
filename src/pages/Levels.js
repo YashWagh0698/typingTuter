@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { levels } from "../utils/levelsData";
 import Footer from "../components/Footer";
 import BackButton from "../components/BackButton";
+import Header from "../components/Header";
 
 export default function Levels() {
   const { category } = useParams();
@@ -9,6 +10,7 @@ export default function Levels() {
 
   return (
 <div>
+<Header/>
     <main>
 <BackButton/>
       <h2>{category} Levels</h2>

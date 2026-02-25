@@ -7,15 +7,11 @@ import TutorialList from "./pages/TutorialList";
 import Task from "./pages/Task";
 import Result from "./pages/Result";
 
-import Header from "./components/Header";
 
 function App() {
   return (
     <BrowserRouter>
-      {/* 🔹 Global banner (visible on all pages) */}
-      <Header />
 
-      {/* 🔹 Main routing area */}
       <Routes>
         <Route path="/" element={<Welcome />} />
         <Route path="/practice" element={<Home />} />
