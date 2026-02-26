@@ -8,42 +8,45 @@ export default function TutorialList() {
   const navigate = useNavigate();
 
   return (
-<div>
-<Header/>
-    <main>
-<BackButton/>
-      <h2>
-        {category} – {level} Tutorials
-      </h2>
+    <div>
+      <Header />
 
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {Array.from({ length: 10 }, (_, i) => (
-          <li
-            key={i}
-            style={{
-              marginBottom: "1rem",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <span style={{ marginRight: "1rem" }}>
-              Start tutorial {i + 1}
-            </span>
+      <main className="tutorial-main">
 
-            <button
-              onClick={() =>
-                navigate(
-                  `/task/${category}/${level}/${i + 1}/1`
-                )
-              }
-            >
-              Tutorial {i + 1}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </main>
-<Footer/>
-</div>
+        <div className="tutorial-top-bar">
+          <BackButton />
+        </div>
+
+        <h2 className="tutorial-heading">
+          {category} – {level} Tutorials
+        </h2>
+
+        <ul className="tutorial-list">
+          {Array.from({ length: 10 }, (_, i) => (
+            <li key={i} className="tutorial-item">
+
+              <span className="tutorial-text">
+                Start tutorial {i + 1}
+              </span>
+
+              <button
+                className="tutorial-button"
+                onClick={() =>
+                  navigate(
+                    `/task/${category}/${level}/${i + 1}/1`
+                  )
+                }
+              >
+                Tutorial {i + 1}
+              </button>
+
+            </li>
+          ))}
+        </ul>
+
+      </main>
+
+      <Footer />
+    </div>
   );
 }

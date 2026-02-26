@@ -6,7 +6,6 @@ export default function Result() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Results passed from Task.js OR fallback from sessionStorage
   const results =
     location.state?.results ||
     JSON.parse(
@@ -16,89 +15,99 @@ export default function Result() {
     ) ||
     [];
 
-  // Total characters of all 10 tasks
   const totalCharacters = results.reduce(
     (sum, task) => sum + task.totalCharacters,
     0
   );
 
-  // Total correct characters typed by user
   const totalCorrectCharacters = results.reduce(
     (sum, task) => sum + task.correctCharacters,
     0
   );
 
-  // Accuracy formula
   const accuracy =
     totalCharacters > 0
       ? (totalCorrectCharacters / totalCharacters) * 100
       : 0;
 
   return (
-<div>
-    <main>
-      <h2>
-        Result — {category} | {level} | Tutorial {tutorial}
-      </h2>
+    <div>
+      <main className="result-main">
 
-      <section aria-live="polite">
-        <p>
-          <strong>Total characters:</strong> {totalCharacters}
-        </p>
-        <p>
-          <strong>Correct characters:</strong>{" "}
-          {totalCorrectCharacters}
-        </p>
-        <p>
-          <strong>Accuracy:</strong>{" "}
-          {accuracy.toFixed(2)}%
-        </p>
-      </section>
+        <section className="result-container">
+          <h2 className="result-title">
+            Result — {category} | {level} | Tutorial {tutorial}
+          </h2>
 
-      <hr />
+          <section
+            className="result-summary"
+            aria-live="polite"
+          >
+            <p>
+              <strong>Total characters:</strong> {totalCharacters}
+            </p>
+            <p>
+              <strong>Correct characters:</strong>{" "}
+              {totalCorrectCharacters}
+            </p>
+            <p>
+              <strong>Accuracy:</strong>{" "}
+              {accuracy.toFixed(2)}%
+            </p>
+          </section>
 
-      <section>
-        <h3>Task-wise Details</h3>
+          <hr className="result-divider" />
 
-        <table border="1" cellPadding="6" cellSpacing="0">
-          <thead>
-            <tr>
-              <th>Task</th>
-              <th>Correct Text</th>
-              <th>You Typed</th>
-              <th>Total Characters</th>
-              <th>Correct Characters</th>
-            </tr>
-          </thead>
+          <section className="result-details">
+            <h3 className="result-subtitle">
+              Task-wise Details
+            </h3>
 
-          <tbody>
-            {results.map((task) => (
-              <tr key={task.taskNumber}>
-                <td>{task.taskNumber}</td>
-                <td>{task.correctText}</td>
-                <td>{task.userText || "(No input)"}</td>
-                <td>{task.totalCharacters}</td>
-                <td>{task.correctCharacters}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+            <div className="table-wrapper">
+              <table className="result-table">
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>Correct Text</th>
+                    <th>You Typed</th>
+                    <th>Total Characters</th>
+                    <th>Correct Characters</th>
+                  </tr>
+                </thead>
 
-      <br />
+                <tbody>
+                  {results.map((task) => (
+                    <tr key={task.taskNumber}>
+                      <td>{task.taskNumber}</td>
+                      <td>{task.correctText}</td>
+                      <td>{task.userText || "(No input)"}</td>
+                      <td>{task.totalCharacters}</td>
+                      <td>{task.correctCharacters}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
 
-      <button
-        onClick={() => {
-          sessionStorage.removeItem(
-            `tutorial-${category}-${level}-${tutorial}`
-          );
-          navigate("/");
-        }}
-      >
-        Go to Home
-      </button>
-    </main>
-<Footer/>
-</div>
+          <div className="result-button-wrapper">
+            <button
+              className="primary-button"
+              onClick={() => {
+                sessionStorage.removeItem(
+                  `tutorial-${category}-${level}-${tutorial}`
+                );
+                navigate("/");
+              }}
+            >
+              Go to Home
+            </button>
+          </div>
+
+        </section>
+      </main>
+
+      <Footer />
+    </div>
   );
 }

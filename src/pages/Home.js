@@ -7,44 +7,62 @@ export default function Home() {
   const navigate = useNavigate();
 
   return (
-<div>
-<Header/>
-    <main>
+    <div>
+      <Header />
 
-<BackButton/>
+      <main className="home-main">
 
-      <h1>Typing Practice (Audio Based)</h1>
+        <div className="home-top-bar">
+          <BackButton />
+        </div>
 
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        <li style={{ marginBottom: "1rem", display: "flex", alignItems: "center" }}>
-          <span style={{ marginRight: "1rem" }}>
-            Click here for words practice
-          </span>
-          <button onClick={() => navigate("/levels/words")}>
-            Word Practice
-          </button>
-        </li>
+        <section className="home-container">
+          <h1 className="home-title">
+            Typing Practice (Audio Based)
+          </h1>
 
-        <li style={{ marginBottom: "1rem", display: "flex", alignItems: "center" }}>
-          <span style={{ marginRight: "1rem" }}>
-            Click here for sentence practice
-          </span>
-          <button onClick={() => navigate("/levels/sentences")}>
-            Sentence Practice
-          </button>
-        </li>
+          <ul className="practice-list">
+            <li className="practice-item">
+              <span className="practice-text">
+                Click here for words practice
+              </span>
+              <button
+                className="secondary-button"
+                onClick={() => navigate("/levels/words")}
+              >
+                Word Practice
+              </button>
+            </li>
 
-        <li style={{ marginBottom: "1rem", display: "flex", alignItems: "center" }}>
-          <span style={{ marginRight: "1rem" }}>
-            Click here for paragraph practice
-          </span>
-          <button onClick={() => navigate("/levels/paragraphs")}>
-            Paragraph Practice
-          </button>
-        </li>
-      </ul>
-    </main>
-<Footer/>
-</div>
+            <li className="practice-item">
+              <span className="practice-text">
+                Click here for sentence practice
+              </span>
+              <button
+                className="secondary-button"
+                onClick={() => navigate("/levels/sentences")}
+              >
+                Sentence Practice
+              </button>
+            </li>
+
+            <li className="practice-item">
+              <span className="practice-text">
+                Click here for paragraph practice
+              </span>
+              <button
+                className="secondary-button"
+                onClick={() => navigate("/levels/paragraphs")}
+              >
+                Paragraph Practice
+              </button>
+            </li>
+          </ul>
+        </section>
+
+      </main>
+
+      <Footer />
+    </div>
   );
 }

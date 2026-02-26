@@ -9,38 +9,45 @@ export default function Levels() {
   const navigate = useNavigate();
 
   return (
-<div>
-<Header/>
-    <main>
-<BackButton/>
-      <h2>{category} Levels</h2>
+    <div>
+      <Header />
 
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {levels.map((level, index) => (
-          <li
-            key={level}
-            style={{
-              marginBottom: "1rem",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <span style={{ marginRight: "1rem" }}>
-              Select level {index + 1}
-            </span>
+      <main className="levels-main">
 
-            <button
-              onClick={() =>
-                navigate(`/tutorials/${category}/${level}`)
-              }
-            >
-              {level}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </main>
-<Footer/>
-</div>
+        <div className="levels-top-bar">
+          <BackButton />
+        </div>
+
+        <section className="levels-container">
+          <h2 className="levels-title">
+            {category} Levels
+          </h2>
+
+          <ul className="levels-list">
+            {levels.map((level, index) => (
+              <li key={level} className="levels-item">
+
+                <span className="levels-text">
+                  Select level {index + 1}
+                </span>
+
+                <button
+                  className="secondary-button"
+                  onClick={() =>
+                    navigate(`/tutorials/${category}/${level}`)
+                  }
+                >
+                  {level}
+                </button>
+
+              </li>
+            ))}
+          </ul>
+
+        </section>
+      </main>
+
+      <Footer />
+    </div>
   );
 }

@@ -1,42 +1,53 @@
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-
 import Footer from "../components/Footer";
+
 export default function Welcome() {
   const navigate = useNavigate();
 
   return (
     <>
-<Header/>
+      <Header />
+
       {/* MAIN LANDMARK */}
-      <main>
-        <h1>Welcome to spellCraft</h1>
+      <main className="welcome-main">
+        <section className="welcome-container">
 
-        <p>
-          SpellCraft is an audio-based English typing practice application.<br/>
-        </p>
+          <h1 className="welcome-title">
+            Welcome to <span className="brand-highlight">SpellCraft</span>
+          </h1>
 
-        <p>
-          You will listen to words, sentences, or paragraphs and type
-          exactly what you hear.<br/> 
-This application is designed especially
-          for Students and learners who want to improve their
-          typing accuracy and listening skills.<br/>
-        </p>
+          <p className="welcome-text">
+            SpellCraft is an audio-based English typing practice application.
+          </p>
 
-        <p>
-         Each practice session includes difficulty levels, tutorials,
-          timed typing tasks, and detailed results to help you track
-          your progress.<br/>
-        </p>
+          <p className="welcome-text">
+            You will listen to words, sentences, or paragraphs and type
+            exactly what you hear. This application is designed especially
+            for students and learners who want to improve their typing
+            accuracy and listening skills.
+          </p>
 
-        <button onClick={() => navigate("/practice")}>
-          PLAY
-        </button>
+          <p className="welcome-text">
+            Each practice session includes difficulty levels, tutorials,
+            timed typing tasks, and detailed results to help you track
+            your progress.
+          </p>
+
+          <div className="welcome-button-wrapper">
+            <button
+              className="primary-button"
+              onClick={() => navigate("/practice")}
+            >
+              Play
+            </button>
+          </div>
+
+        </section>
       </main>
 
-      {/* CONTENTINFO LANDMARK (OUTSIDE MAIN) */}
-      <Footer/>
+      {/* CONTENTINFO LANDMARK */}
+      <Footer />
     </>
   );
 }
